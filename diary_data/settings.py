@@ -88,7 +88,7 @@ if os.getenv('PYTHONANYWHERE_DOMAIN', '').startswith('pythonanywhere'):
             'NAME':'diaryproject2019$diary_data',
             'HOST':'diaryproject2019.mysql.pythonanywhere-services.com',
             'USER':'diaryproject2019',
-            'PASSWORD':'Diaryproject@123',
+            'PASSWORD':'Test@1234',
             # 'PORT':3307,
             'OPTIONS': {
                 'init_command': 'SET default_storage_engine=INNODB',
