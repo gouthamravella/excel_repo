@@ -91,9 +91,9 @@ if os.getenv('PYTHONANYWHERE_DOMAIN', '').startswith('pythonanywhere'):
             'PASSWORD':'Test@1234',
             # 'PORT':3307,
             'OPTIONS': {
-                'init_command': 'SET default_storage_engine=INNODB',
-                'sql_mode': 'STRICT_TRANS_TABLES',
-                # 'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                # 'init_command': 'SET default_storage_engine=INNODB',
+                # 'sql_mode': 'STRICT_TRANS_TABLES',
                 # 'read_default_file': os.path.join(BASE_DIR, 'migo_django/mysql.cnf'),
             },
             # Tell Django to build the test database with the 'utf8mb4' character set
