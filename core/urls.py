@@ -9,6 +9,7 @@ urlpatterns = [
     # re_path(r'^order-detail/(?P<id>[\d-]+)/$', views.OrdersDetailView.as_view(), name='order_detail'),
     # # Use for POST, for new order
     re_path(r'^get-expression-by-id/$', views.ExpressionsDetailView.as_view(), name='get_expression'),
+    re_path(r'^get-expressions-by-intents/$', views.ExpressionsFilterView.as_view(), name='get_expressions_by_intents'),
     re_path(r'^upload-bulk-expressions/$', views.ExpressionsPostView.as_view(), name='upload_expressions'),
     # re_path(r'update-order/(?P<string>[\w\-]+)/$', views.OrdersDetailView.as_view(), name='update-order'),
     
