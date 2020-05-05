@@ -18,7 +18,16 @@ class ExpressionsDetailView(APIView):
                 return Response(data={'response':serializer.data}, status=status.HTTP_200_OK)
         except Expressions.DoesNotExist as e:
             return Response(status=status.HTTP_204_NO_CONTENT)
-        
+
+class ExpressionsListView(APIView):
+    def get(self, request, format=None):
+        domain = request.data.get('domain', '')
+        try:
+            expressions = Expressions.objects.filter(domain=domain)
+            serializer = ExpressionsSerializer(expressions, many=True)
+            return Response(data={'response':serializer.data}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(data={'error':str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class ExpressionsPostView(APIView):
     def post(self, request, format=None):
