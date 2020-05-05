@@ -16,5 +16,5 @@ class Expressions(models.Model):
         ]
 
     def __str__(self):
-        return self.id
+        return '{}'.format(self.id)
     
