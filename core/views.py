@@ -4,8 +4,9 @@ from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
 from .models import Expressions
-from .serializers import ExpressionsSerializer
+from .serializers import ExpressionsSerializer, CauseAndEffectSerializer
 # Create your views here.
+
 
 class ExpressionsDetailView(APIView):
     def get(self, request, format=None):
@@ -19,6 +20,7 @@ class ExpressionsDetailView(APIView):
         except Expressions.DoesNotExist as e:
             return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 class ExpressionsListView(APIView):
     def get(self, request, format=None):
         domain = request.data.get('domain', '')
@@ -28,6 +30,7 @@ class ExpressionsListView(APIView):
             return Response(data={'response':serializer.data}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(data={'error':str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 class ExpressionsPostView(APIView):
     def post(self, request, format=None):
@@ -64,20 +67,20 @@ class ExpressionsFilterView(APIView):
             causes_exprs = []
             effects_exprs = []
             for intent in intents:
-                expression = Expressions.objects.filter(domain=domain, intents__contains=[intent])
+                expression = Expressions.objects.filter(domain__iexact=domain, intents__contains=[intent])
                 causes = [j for i in expression for j in i.cumulative_cause_intents] if len(expression) else []
                 effects = [j for i in expression for j in i.cumulative_effect_intents] if len(expression) else []
                 
                 if causes:
                     for cause in causes:
-                        exprs = Expressions.objects.filter(domain=domain, cumulative_cause_intents__contains=[cause])
+                        exprs = Expressions.objects.filter(domain__iexact=domain, intents__contains=[cause])
                         causes_exprs.extend(exprs)
                 if effects:
                     for effect in effects:
-                        exprs = Expressions.objects.filter(domain=domain, cumulative_effect_intents__contains=[effect])
+                        exprs = Expressions.objects.filter(domain__iexact=domain, intents__contains=[effect])
                         effects_exprs.extend(exprs)
-            causes_serializer = ExpressionsSerializer(set(causes_exprs), many=True)
-            effects_serializer = ExpressionsSerializer(set(effects_exprs), many=True)
+            causes_serializer = CauseAndEffectSerializer(set(causes_exprs), many=True)
+            effects_serializer = CauseAndEffectSerializer(set(effects_exprs), many=True)
             return Response(data={'response':{'causes':causes_serializer.data, 'effects':effects_serializer.data}}, status=status.HTTP_200_OK)
             # if serializer.is_valid(raise_exception=True):
         except Exception as e:
